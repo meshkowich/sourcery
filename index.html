@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <script>
+    const compress = () => {
+      const str = document.getElementById('inputText1').value;
+      const arr = str.split('');
+      let result = '';
+      let counter = 1; // counter will always be at least 1
+      arr.forEach((char, index) => { // iterate through each char
+        if (char === arr[index + 1]) { // if next char is the same
+          counter++; // then increment counter 
+        } else { // if next char is different
+          result += `${char}${counter}`; // write the char and its count
+          counter = 1; // and reset counter for the next char
+        }
+      });
+      document.getElementById('result1').innerText = result;
+    };
+    const decompress = () => {
+      const str = document.getElementById('inputText2').value;
+      const arr = str.split('');
+      let result = '';
+      try {
+        arr.forEach((char, index) => { // iterate through each character
+          if (Number.isNaN(Number.parseInt(char))) { // if character is not a number
+            let i = index;
+            let number = '';
+            do { // loop through the following characters until encountering a non-number character
+              number += arr[i + 1]; // record the full number
+              i++;
+            } while (Number.isInteger(Number.parseInt(arr[i + 1])));
+            const repeat = Number.parseInt(number); // convert the number to integer
+            if (Number.isNaN(repeat)) { // if the next character is not a number, show error
+              throw new Error();
+            }
+
+            result += char.repeat(repeat); // repeat the character and write it to the result
+          } else { // if character is a number
+            result += ''; // remove the number from the final result
+          }
+          document.getElementById('result2').innerText = result;
+        });
+      } catch {
+        document.getElementById('result2').innerText = 'Wrong input format'; // show error if incorrect format
+      }
+    };
+  </script>
+  <style>
+    input {
+      padding: 10px;
+      font-size: xxx-large;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-right: 10px;
+      width: 700px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: xxx-large;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    p {
+      font-family: sans-serif;
+      font-size: xx-large;
+      word-break: break-all;
+    }
+    .container {
+      margin: 20px;
+      padding: 1em;
+      background-color: aliceblue;
+    }
+  </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compress and Decompress numbers</title>
+</head>
+<body>
+  <div class="container">
+    <input type="text" id="inputText1" placeholder="Enter text">
+    <button onclick="compress()">Compress</button>
+    <p>Compressed result: <span id="result1"></span></p>
+  </div>
+  <div class="container">
+    <input type="text" id="inputText2" placeholder="Enter text">
+    <button onclick="decompress()">Decompress</button>
+    <p>Decompressed result: <span id="result2"></span></p>
+  </div>
+</body>
+</html>
